@@ -1,5 +1,9 @@
 RewriteEngine On
 
-# Send all requests into /public
-RewriteCond %{REQUEST_URI} !^/public/
+# If the file or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise, route everything to /public
 RewriteRule ^(.*)$ public/$1 [L]
