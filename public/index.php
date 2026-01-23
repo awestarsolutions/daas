@@ -41,7 +41,22 @@
         .subtitle {
             font-size: 15px;
             color: var(--muted);
-            margin-bottom: 32px;
+            margin-bottom: 12px;
+        }
+
+        .links {
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-right: 16px;
+        }
+
+        .links a:hover {
+            color: var(--text);
         }
 
         .panel {
@@ -153,6 +168,10 @@
     <h1>Delay as a Service</h1>
     <div class="subtitle">
         An HTTP endpoint that waits before responding.
+    </div>
+
+    <div class="links">
+        <a href="/docs">Documentation</a>
     </div>
 
     <div class="panel">
