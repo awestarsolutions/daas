@@ -89,6 +89,23 @@
             border-color: var(--text);
         }
 
+        .custom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        input {
+            background: #0b0b0b;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 10px;
+            border-radius: 6px;
+            width: 140px;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+
         .result {
             margin-top: 24px;
             padding-top: 16px;
@@ -141,8 +158,7 @@
     <div class="panel">
         <p><strong>What it does</strong></p>
         <p class="explain">
-            This API introduces a deliberate delay before returning a response.<br>
-            It is useful for testing loading states, retries, and time-dependent behavior.
+            This API introduces a deliberate delay before returning a response.
         </p>
 
         <code>GET /delay</code>
@@ -152,7 +168,7 @@
 
         <code>GET /delay?ms=1000</code>
         <p class="explain">
-            Requests a specific delay (in milliseconds). Timing is best-effort.
+            Requests a specific delay in milliseconds. Timing is best-effort.
         </p>
     </div>
 
@@ -164,11 +180,30 @@
 
         <div class="examples">
             <button onclick="runTest('/delay')">Random delay</button>
-            <button onclick="runTest('/delay?ms=500')">500 ms delay</button>
-            <button onclick="runTest('/delay?ms=1500')">1500 ms delay</button>
+            <button onclick="runTest('/delay?ms=500')">500 ms</button>
+            <button onclick="runTest('/delay?ms=1500')">1500 ms</button>
+        </div>
+
+        <div class="custom">
+            <p class="explain"><strong>Custom delay</strong></p>
+            <p class="explain">
+                Use this if you want a specific timing (100–5000 ms).
+            </p>
+            <input type="number" id="customMs" placeholder="e.g. 1200">
+            <button onclick="runCustom()">Run</button>
         </div>
 
         <div class="result" id="result"></div>
+    </div>
+
+    <div class="panel">
+        <p><strong>Why use this</strong></p>
+        <p class="explain">
+            • Test loading states and spinners<br>
+            • Simulate slow or unreliable networks<br>
+            • Verify retry and timeout behavior<br>
+            • Observe real user-perceived latency
+        </p>
     </div>
 
     <div class="panel">
@@ -214,6 +249,12 @@ async function runTest(url) {
             <div class="row">The request did not complete.</div>
         `;
     }
+}
+
+function runCustom() {
+    const ms = document.getElementById("customMs").value;
+    if (!ms) return;
+    runTest(`/delay?ms=${encodeURIComponent(ms)}`);
 }
 </script>
 
