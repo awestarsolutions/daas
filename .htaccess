@@ -1,8 +1,9 @@
-DirectoryIndex index.php
-
 RewriteEngine On
 
-# Explicit clean URL for /delay
+# Root URL -> landing page
+RewriteRule ^$ public/index.php [L]
+
+# Clean API endpoint
 RewriteRule ^delay$ public/delay.php [L]
 
 # If the file or directory exists, serve it directly
