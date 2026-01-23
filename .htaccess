@@ -1,17 +1,12 @@
 RewriteEngine On
 
-# Root URL -> landing page
+# 1. Root URL -> landing page
 RewriteRule ^$ public/index.php [L]
 
-# Clean API endpoint
-RewriteRule ^delay$ public/delay.php [L]
-RewriteRule ^docs$ public/docs.php [L]
+# 2. If /public/<path>.php exists, route to it
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/public/$1.php -f
+RewriteRule ^(.+)$ public/$1.php [L]
 
-
-# If the file or directory exists, serve it directly
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-
-# Otherwise, route everything to /public
-RewriteRule ^(.*)$ public/$1 [L]
+# 3. Otherwise, do nothing (404 handled normally)
