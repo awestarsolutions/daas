@@ -27,7 +27,7 @@
         }
 
         .wrap {
-            max-width: 760px;
+            max-width: 780px;
             margin: 0 auto;
             padding: 64px 24px;
         }
@@ -39,9 +39,9 @@
         }
 
         .subtitle {
-            margin-bottom: 32px;
             font-size: 15px;
             color: var(--muted);
+            margin-bottom: 32px;
         }
 
         .panel {
@@ -60,41 +60,26 @@
             border-radius: 6px;
             font-size: 14px;
             color: #dcdcdc;
+            margin: 12px 0;
         }
 
-        .field {
-            margin-top: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-
-        input {
-            width: 180px;
-            background: #0b0b0b;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 12px;
-            border-radius: 6px;
+        .explain {
             font-size: 14px;
+            color: var(--muted);
         }
 
-        .hint {
-            font-size: 12px;
-            color: #7a7a7a;
-            margin-top: 6px;
+        .examples {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
         }
 
         button {
-            margin-top: 16px;
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
@@ -147,56 +132,67 @@
 </head>
 <body>
 <div class="wrap">
+
     <h1>Delay as a Service</h1>
-    <div class="subtitle">An HTTP endpoint that waits before responding.</div>
+    <div class="subtitle">
+        An HTTP endpoint that waits before responding.
+    </div>
 
     <div class="panel">
-        <code>
-GET /delay<br>
-GET /delay?ms=1000
-        </code>
+        <p><strong>What it does</strong></p>
+        <p class="explain">
+            This API introduces a deliberate delay before returning a response.<br>
+            It is useful for testing loading states, retries, and time-dependent behavior.
+        </p>
 
-        <div class="field">
-            <label for="ms">Requested delay (milliseconds)</label>
-            <input type="number" id="ms" placeholder="leave empty for random" min="100" max="5000">
-            <div class="hint">
-                Optional. If not provided, the service chooses a random delay.
-            </div>
+        <code>GET /delay</code>
+        <p class="explain">
+            Returns a response after a short, random delay.
+        </p>
+
+        <code>GET /delay?ms=1000</code>
+        <p class="explain">
+            Requests a specific delay (in milliseconds). Timing is best-effort.
+        </p>
+    </div>
+
+    <div class="panel">
+        <p><strong>Try an example</strong></p>
+        <p class="explain">
+            These examples call the live API and show what happens.
+        </p>
+
+        <div class="examples">
+            <button onclick="runTest('/delay')">Random delay</button>
+            <button onclick="runTest('/delay?ms=500')">500 ms delay</button>
+            <button onclick="runTest('/delay?ms=1500')">1500 ms delay</button>
         </div>
-
-        <button onclick="testDelay()">Run test</button>
 
         <div class="result" id="result"></div>
     </div>
 
-    <p class="subtitle">
-        No queues. No guarantees. Best-effort timing only.
-    </p>
-
     <div class="panel">
-        <p><strong>What this is for</strong></p>
-        <p class="subtitle">
-            Testing loading states, retry logic, and time-dependent behavior.<br>
-            Making latency visible during development.
+        <p><strong>Notes</strong></p>
+        <p class="explain">
+            • Stateless<br>
+            • Public<br>
+            • No SLA<br>
+            • Best-effort timing
         </p>
     </div>
 
     <footer>
-        <div>Stateless • Public • Minimal</div>
+        <div>Minimal infrastructure, intentionally.</div>
         <div>
             <a href="https://github.com/awestarsolutions/daas" target="_blank">GitHub</a>
         </div>
     </footer>
+
 </div>
 
 <script>
-async function testDelay() {
+async function runTest(url) {
     const result = document.getElementById("result");
-    const ms = document.getElementById("ms").value;
-
-    let url = "/delay";
-    if (ms) url += "?ms=" + encodeURIComponent(ms);
-
     result.innerHTML = "<div class='status'>Waiting…</div>";
 
     const start = performance.now();
@@ -208,7 +204,7 @@ async function testDelay() {
 
         result.innerHTML = `
             <div class="status success">Success</div>
-            <div class="row">Requested delay: ${ms || "random"}</div>
+            <div class="row">Endpoint: ${url}</div>
             <div class="row">Service delay: ${data.delay_ms} ms</div>
             <div class="row">Observed time: ${elapsed} ms</div>
         `;
@@ -220,5 +216,6 @@ async function testDelay() {
     }
 }
 </script>
+
 </body>
 </html>
