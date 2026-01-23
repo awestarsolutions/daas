@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Explicit clean URL for /delay
+RewriteRule ^delay$ public/delay.php [L]
+
 # If the file or directory exists, serve it directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
