@@ -5,6 +5,8 @@ RewriteRule ^$ public/index.php [L]
 
 # Clean API endpoint
 RewriteRule ^delay$ public/delay.php [L]
+RewriteRule ^docs$ public/docs.php [L]
+
 
 # If the file or directory exists, serve it directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
