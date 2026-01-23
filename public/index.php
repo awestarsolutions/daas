@@ -27,21 +27,21 @@
         }
 
         .wrap {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
             padding: 64px 24px;
         }
 
         h1 {
             font-size: 30px;
-            margin: 0 0 12px;
+            margin: 0 0 8px;
             letter-spacing: -0.02em;
         }
 
-        p {
-            margin: 0 0 16px;
-            color: var(--muted);
+        .subtitle {
+            margin-bottom: 32px;
             font-size: 15px;
+            color: var(--muted);
         }
 
         .panel {
@@ -62,29 +62,42 @@
             color: #dcdcdc;
         }
 
-        .controls {
-            display: flex;
-            gap: 12px;
+        .field {
             margin-top: 16px;
-            flex-wrap: wrap;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px;
         }
 
         input {
+            width: 180px;
             background: #0b0b0b;
             border: 1px solid var(--border);
             color: var(--text);
             padding: 10px 12px;
             border-radius: 6px;
-            width: 120px;
+            font-size: 14px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #7a7a7a;
+            margin-top: 6px;
         }
 
         button {
+            margin-top: 16px;
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
         }
 
         button:hover {
@@ -92,12 +105,24 @@
         }
 
         .result {
-            margin-top: 20px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
             font-size: 14px;
+        }
+
+        .status {
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .success { color: var(--success); }
         .error { color: var(--error); }
+
+        .row {
+            margin: 4px 0;
+            color: var(--muted);
+        }
 
         footer {
             margin-top: 64px;
@@ -123,7 +148,7 @@
 <body>
 <div class="wrap">
     <h1>Delay as a Service</h1>
-    <p>An HTTP endpoint that waits before responding.</p>
+    <div class="subtitle">An HTTP endpoint that waits before responding.</div>
 
     <div class="panel">
         <code>
@@ -131,33 +156,33 @@ GET /delay<br>
 GET /delay?ms=1000
         </code>
 
-        <div class="controls">
-            <input type="number" id="ms" placeholder="ms (optional)" min="100" max="5000">
-            <button onclick="testDelay()">Test delay</button>
+        <div class="field">
+            <label for="ms">Requested delay (milliseconds)</label>
+            <input type="number" id="ms" placeholder="leave empty for random" min="100" max="5000">
+            <div class="hint">
+                Optional. If not provided, the service chooses a random delay.
+            </div>
         </div>
+
+        <button onclick="testDelay()">Run test</button>
 
         <div class="result" id="result"></div>
     </div>
 
-    <p>
-        No queues. No guarantees.<br>
-        Stateless. Best-effort timing.<br>
-        It simply waits.
+    <p class="subtitle">
+        No queues. No guarantees. Best-effort timing only.
     </p>
 
     <div class="panel">
-        <p><strong>Why does this exist?</strong></p>
-        <p>
-            To test loading states.<br>
-            To simulate latency.<br>
-            To make time explicit.
+        <p><strong>What this is for</strong></p>
+        <p class="subtitle">
+            Testing loading states, retry logic, and time-dependent behavior.<br>
+            Making latency visible during development.
         </p>
     </div>
 
     <footer>
-        <div>
-            Best-effort timing. No SLA.
-        </div>
+        <div>Stateless • Public • Minimal</div>
         <div>
             <a href="https://github.com/awestarsolutions/daas" target="_blank">GitHub</a>
         </div>
@@ -172,8 +197,7 @@ async function testDelay() {
     let url = "/delay";
     if (ms) url += "?ms=" + encodeURIComponent(ms);
 
-    result.textContent = "Waiting…";
-    result.className = "result";
+    result.innerHTML = "<div class='status'>Waiting…</div>";
 
     const start = performance.now();
 
@@ -182,15 +206,17 @@ async function testDelay() {
         const data = await res.json();
         const elapsed = Math.round(performance.now() - start);
 
-        result.innerHTML =
-            `<span class="success">Success</span><br>` +
-            `Requested: ${ms || "random"} ms<br>` +
-            `Actual: ${data.delay_ms} ms<br>` +
-            `Observed: ${elapsed} ms`;
+        result.innerHTML = `
+            <div class="status success">Success</div>
+            <div class="row">Requested delay: ${ms || "random"}</div>
+            <div class="row">Service delay: ${data.delay_ms} ms</div>
+            <div class="row">Observed time: ${elapsed} ms</div>
+        `;
     } catch (e) {
-        result.innerHTML =
-            `<span class="error">Failed</span><br>` +
-            `The request did not complete.`;
+        result.innerHTML = `
+            <div class="status error">Failed</div>
+            <div class="row">The request did not complete.</div>
+        `;
     }
 }
 </script>
