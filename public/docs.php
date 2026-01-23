@@ -111,6 +111,38 @@
         It is designed for testing latency, retries, and time-dependent behavior.
     </div>
 
+    <h2>Philosophy</h2>
+
+    <p>
+        <strong>Time is a dependency.</strong>
+    </p>
+
+    <p>
+        Modern systems depend on latency, retries, timeouts, and user perception — yet
+        time is often mocked, skipped, or approximated during development.
+    </p>
+
+    <p>
+        Delay as a Service exists to make time explicit.
+    </p>
+
+    <p>
+        It does not simulate networks.<br>
+        It does not emulate failures.<br>
+        It simply waits.
+    </p>
+
+    <p>
+        By treating time as a first-class input, developers can test loading states,
+        retry logic, and user experience under real waiting conditions — without adding
+        complexity or infrastructure.
+    </p>
+
+    <p>
+        This service is intentionally minimal.<br>
+        The constraint is the product.
+    </p>
+
     <h2>Base URL</h2>
     <code>https://daas.awestar.solutions</code>
 
@@ -140,9 +172,7 @@ GET /delay
 GET /delay?ms=1000
     </code>
 
-    <h2>Response</h2>
-
-    <p>Successful response:</p>
+    <h2>Successful Response</h2>
 
     <code>
 HTTP/1.1 200 OK
@@ -167,7 +197,7 @@ HTTP/1.1 400 Bad Request
 }
     </code>
 
-    <p>Rate limited or busy:</p>
+    <p>Rate limited or too many concurrent requests:</p>
 
     <code>
 HTTP/1.1 429 Too Many Requests
@@ -200,7 +230,7 @@ HTTP/1.1 429 Too Many Requests
         <li>Simulating slow or unreliable networks</li>
         <li>Retry and timeout behavior validation</li>
         <li>UX latency observation</li>
-        <li>Chaos and resilience testing (lightweight)</li>
+        <li>Lightweight resilience testing</li>
     </ul>
 
     <footer>
