@@ -41,22 +41,7 @@
         .subtitle {
             font-size: 15px;
             color: var(--muted);
-            margin-bottom: 12px;
-        }
-
-        .links {
-            margin-bottom: 24px;
-            font-size: 14px;
-        }
-
-        .links a {
-            color: var(--muted);
-            text-decoration: none;
-            margin-right: 16px;
-        }
-
-        .links a:hover {
-            color: var(--text);
+            margin-bottom: 32px;
         }
 
         .panel {
@@ -170,10 +155,6 @@
         An HTTP endpoint that waits before responding.
     </div>
 
-    <div class="links">
-        <a href="/docs">Documentation</a>
-    </div>
-
     <div class="panel">
         <p><strong>What it does</strong></p>
         <p class="explain">
@@ -236,8 +217,11 @@
     </div>
 
     <footer>
-        <div>Minimal infrastructure, intentionally.</div>
         <div>
+            Minimal infrastructure, intentionally.
+        </div>
+        <div>
+            <a href="/docs">Documentation</a> ·
             <a href="https://github.com/awestarsolutions/daas" target="_blank">GitHub</a>
         </div>
     </footer>
